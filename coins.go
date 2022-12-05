@@ -44,7 +44,7 @@ func CoinsHandler(w http.ResponseWriter, r *http.Request, baseApi string) {
 				Msg("Started querying coins by id")
 			queryStart := time.Now()
 
-			resp, err := SendQuery(baseApi, coinId)
+			resp, err := SendQueryCoinsDetail(baseApi, coinId)
 
 			if err != nil {
 				sublogger.Error().
