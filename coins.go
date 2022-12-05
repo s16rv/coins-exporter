@@ -26,7 +26,7 @@ func CoinsHandler(w http.ResponseWriter, r *http.Request, baseApi string) {
 			Help:        "Price of Coins in currency",
 			ConstLabels: ConstLabels,
 		},
-		[]string{"id", "symbol", "currency"},
+		[]string{"id", "symbol", "currency", "name"},
 	)
 
 	registry := prometheus.NewRegistry()
@@ -54,11 +54,14 @@ func CoinsHandler(w http.ResponseWriter, r *http.Request, baseApi string) {
 				return
 			}
 
+			price := resp.MarketData.CurrentPrice.GetField(Currency)
+
 			coinsPriceGauge.With(prometheus.Labels{
 				"id":       coinId,
 				"symbol":   resp.Symbol,
-				"currency": "USD",
-			}).Set(resp.MarketData.CurrentPrice.USD)
+				"name":     resp.Name,
+				"currency": Currency,
+			}).Set(price)
 
 			sublogger.Debug().
 				Str("id", coinId).
