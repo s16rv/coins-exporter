@@ -1,11 +1,14 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 
 	"github.com/rs/zerolog"
+	"github.com/s16rv/coins-exporter/types"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
@@ -16,6 +19,7 @@ var (
 	CoingeckoApi  string
 	LogLevel      string
 	JsonOutput    bool
+	ConstLabels   map[string]string
 )
 
 var log = zerolog.New(zerolog.ConsoleWriter{Out: os.Stdout}).With().Timestamp().Logger()
@@ -56,8 +60,8 @@ func Execute(cmd *cobra.Command, args []string) {
 		Bool("--json", JsonOutput).
 		Msg("Started with following parameters")
 
-	http.HandleFunc("/metrics/price", func(w http.ResponseWriter, r *http.Request) {
-		// PriceHandler(w, r, CoingeckoApi)
+	http.HandleFunc("/metrics/coins", func(w http.ResponseWriter, r *http.Request) {
+		CoinsHandler(w, r, CoingeckoApi)
 	})
 
 	log.Info().Str("address", ListenAddress).Msg("Listening")
@@ -65,6 +69,28 @@ func Execute(cmd *cobra.Command, args []string) {
 	if err != nil {
 		log.Fatal().Err(err).Msg("Could not start application")
 	}
+}
+
+func SendQuery(baseApi, id string) (types.ReturnData, error) {
+	u := baseApi + "/coins/" + id
+	var d types.ReturnData
+
+	client := &http.Client{}
+
+	req, _ := http.NewRequest("GET", u, nil)
+	resp, err := client.Do(req)
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return d, err
+	}
+	err = json.Unmarshal(body, &d)
+	if err != nil {
+		return d, err
+	}
+	defer resp.Body.Close()
+
+	return d, nil
 }
 
 func main() {
