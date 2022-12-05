@@ -14,6 +14,7 @@ import (
 var (
 	ListenAddress string
 	CoingeckoApi  string
+	Currency      string
 	LogLevel      string
 	JsonOutput    bool
 	ConstLabels   map[string]string
@@ -52,6 +53,7 @@ func Execute(cmd *cobra.Command, args []string) {
 
 	log.Info().
 		Str("--listen-address", ListenAddress).
+		Str("--currency", Currency).
 		Str("--coingecko-api", CoingeckoApi).
 		Str("--log-level", LogLevel).
 		Bool("--json", JsonOutput).
@@ -70,6 +72,7 @@ func Execute(cmd *cobra.Command, args []string) {
 
 func main() {
 	rootCmd.PersistentFlags().StringVar(&ListenAddress, "listen-address", ":9500", "The address this exporter would listen on")
+	rootCmd.PersistentFlags().StringVar(&Currency, "currency", "USD", "Convert price value")
 	rootCmd.PersistentFlags().StringVar(&CoingeckoApi, "coingecko-api", "https://api.coingecko.com/api/v3", "Coingecko API address")
 	rootCmd.PersistentFlags().StringVar(&LogLevel, "log-level", "info", "Logging level")
 	rootCmd.PersistentFlags().BoolVar(&JsonOutput, "json", false, "Output logs as JSON")
