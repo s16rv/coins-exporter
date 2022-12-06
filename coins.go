@@ -18,6 +18,12 @@ func CoinsHandler(w http.ResponseWriter, r *http.Request, baseApi string) {
 		Logger()
 
 	coinIdsRaw := r.URL.Query().Get("ids")
+	if coinIdsRaw == "" {
+		sublogger.Error().
+			Msg("Query ids is empty")
+		return
+	}
+
 	coinIds := strings.Split(coinIdsRaw, ",")
 
 	coinsPriceGauge := prometheus.NewGaugeVec(
