@@ -12,33 +12,4 @@ linters-settings:
         disabled: true
 
 linters:
-  enable-all: true
-  disable:
-    - prealloc
-    - lll
-    - dupl
-    - funlen
-    - wsl
-    - gomnd
-    - unparam
-    - goerr113
-    - nestif
-    - errcheck
-    - golint
-    - scopelint
-    - maligned
-    - interfacer
-    - wrapcheck
-    - varnamelen
-    - tagliatelle
-    - exhaustivestruct
-    - gomoddirectives
-    - ireturn
-    - nlreturn
-    - cyclop
-    - errorlint
-    - noctx
-    - gocognit
-    - gocyclo
-    - promlinter
-    - gochecknoglobals
+  enable-all: false
