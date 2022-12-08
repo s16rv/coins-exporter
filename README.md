@@ -22,7 +22,7 @@ coins_price{currency="USD",id="osmosis",name="Osmosis",symbol="osmo"} 0.909976
 
 ## How can I set it up?
 
-First of all, you need to download the latest release from [the releases page](https://github.com/s16/coins-exporter/releases/). After that, you should unzip it and you are ready to go:
+First of all, you need to download the latest release from [the releases page](https://github.com/s16rv/coins-exporter/releases/). After that, you should unzip it and you are ready to go:
 
 ```sh
 wget <the link from the releases page>
